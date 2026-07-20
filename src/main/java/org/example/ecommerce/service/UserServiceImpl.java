@@ -59,7 +59,9 @@ public class UserServiceImpl implements UserService {
         if (user.getRoles().contains(adminRole)) {
             throw new BusinessException("This user already has ADMIN privileges.");
         }
-        user.getRoles().add(adminRole);
+        user.addRole(adminRole);
+        user.removeRole(roleRepository.findByName("USER")
+                .orElseThrow(() -> new BusinessException("System Error: USER role does not exist.")));
         userRepository.save(user);
     }
 }
