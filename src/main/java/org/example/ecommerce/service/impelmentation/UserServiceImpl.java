@@ -5,7 +5,7 @@ import org.example.ecommerce.dto.request.UserRequestDto;
 import org.example.ecommerce.dto.response.UserResponseDto;
 import org.example.ecommerce.entity.Role;
 import org.example.ecommerce.entity.User;
-import org.example.ecommerce.error.BusinessException;
+import org.example.ecommerce.exceptions.BusinessException;
 import org.example.ecommerce.mapper.UserMapper;
 import org.example.ecommerce.repository.RoleRepository;
 import org.example.ecommerce.repository.UserRepository;

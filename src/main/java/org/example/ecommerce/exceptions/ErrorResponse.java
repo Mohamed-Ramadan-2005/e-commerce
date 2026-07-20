@@ -1,4 +1,4 @@
-package org.example.ecommerce.error;
+package org.example.ecommerce.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

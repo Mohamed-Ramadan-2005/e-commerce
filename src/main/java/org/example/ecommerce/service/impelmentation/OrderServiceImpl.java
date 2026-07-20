@@ -9,7 +9,7 @@ import org.example.ecommerce.entity.OrderItem;
 import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.entity.User;
 import org.example.ecommerce.entity.enums.OrderStatus;
-import org.example.ecommerce.error.BusinessException;
+import org.example.ecommerce.exceptions.BusinessException;
 import org.example.ecommerce.mapper.OrderMapper;
 import org.example.ecommerce.repository.OrderRepository;
 import org.example.ecommerce.service.interfaces.OrderService;

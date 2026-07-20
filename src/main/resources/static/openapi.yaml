@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080
     description: Local development server
 paths:
-  /api/users/register:
+  /users/register:
     post:
       tags:
         - Authentication
@@ -21,7 +21,7 @@ paths:
       responses:
         '201':
           description: User created successfully
-  /api/users/login:
+  /users/login:
     post:
       tags:
         - Authentication
@@ -39,7 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JwtResponseDto'
-  /api/users/{id}/promote:
+  /users/{id}/promote:
     patch:
       tags:
         - Authentication
@@ -56,7 +56,7 @@ paths:
       responses:
         '200':
           description: User promoted successfully
-  /api/products:
+  /products:
     get:
       tags:
         - Products
@@ -85,7 +85,7 @@ paths:
       responses:
         '201':
           description: Product created
-  /api/products/{id}:
+  /products/{id}:
     put:
       tags:
         - Products
@@ -124,7 +124,7 @@ paths:
       responses:
         '204':
           description: Product deleted
-  /api/orders:
+  /orders:
     post:
       tags:
         - Orders
@@ -149,7 +149,7 @@ paths:
       responses:
         '200':
           description: List of all orders
-  /api/orders/my-orders:
+  /orders/my-orders:
     get:
       tags:
         - Orders
@@ -159,7 +159,7 @@ paths:
       responses:
         '200':
           description: List of personal orders
-  /api/orders/{id}/status:
+  /orders/{id}/status:
     patch:
       tags:
         - Orders

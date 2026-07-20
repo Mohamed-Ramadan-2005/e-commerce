@@ -1,4 +1,4 @@
-package org.example.ecommerce.error;
+package org.example.ecommerce.exceptions;
 
 public class BusinessException extends RuntimeException {
     public BusinessException(String message) {

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
-import org.example.ecommerce.error.BusinessException;
+import org.example.ecommerce.exceptions.BusinessException;
 import org.example.ecommerce.mapper.ProductMapper;
 import org.example.ecommerce.repository.ProductRepository;
 import org.example.ecommerce.service.interfaces.ProductService;
