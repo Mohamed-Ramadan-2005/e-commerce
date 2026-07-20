@@ -1,4 +1,4 @@
-package org.example.ecommerce.dto;
+package org.example.ecommerce.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

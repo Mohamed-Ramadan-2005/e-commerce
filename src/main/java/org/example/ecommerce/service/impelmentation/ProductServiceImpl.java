@@ -1,12 +1,13 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.impelmentation;
 
-import org.example.ecommerce.dto.ProductRequestDto;
-import org.example.ecommerce.dto.ProductResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.example.ecommerce.dto.request.ProductRequestDto;
+import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.error.BusinessException;
 import org.example.ecommerce.mapper.ProductMapper;
 import org.example.ecommerce.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.ecommerce.service.interfaces.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
     @Override
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto dto) {

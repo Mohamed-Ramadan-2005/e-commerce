@@ -1,8 +1,8 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.interfaces;
 
-import org.example.ecommerce.dto.OrderRequestDto;
-import org.example.ecommerce.dto.OrderResponseDto;
-import org.example.ecommerce.enumrate.OrderStatus;
+import org.example.ecommerce.dto.request.OrderRequestDto;
+import org.example.ecommerce.dto.response.OrderResponseDto;
+import org.example.ecommerce.entity.enums.OrderStatus;
 
 import java.util.List;
 

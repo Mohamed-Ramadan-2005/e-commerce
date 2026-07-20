@@ -1,10 +1,10 @@
 package org.example.ecommerce.controller;
 
 import jakarta.validation.Valid;
-import org.example.ecommerce.dto.OrderRequestDto;
-import org.example.ecommerce.dto.OrderResponseDto;
-import org.example.ecommerce.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.example.ecommerce.dto.request.OrderRequestDto;
+import org.example.ecommerce.dto.response.OrderResponseDto;
+import org.example.ecommerce.service.interfaces.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,9 +15,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@RequiredArgsConstructor
 public class OrderController {
-    @Autowired
-    OrderService orderService;
+    private final OrderService orderService;
     @GetMapping("user/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<OrderResponseDto>> getUserOrders(@PathVariable Long userId) {

@@ -1,28 +1,27 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.impelmentation;
 
-import org.example.ecommerce.dto.UserRequestDto;
-import org.example.ecommerce.dto.UserResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.example.ecommerce.dto.request.UserRequestDto;
+import org.example.ecommerce.dto.response.UserResponseDto;
 import org.example.ecommerce.entity.Role;
 import org.example.ecommerce.entity.User;
 import org.example.ecommerce.error.BusinessException;
 import org.example.ecommerce.mapper.UserMapper;
 import org.example.ecommerce.repository.RoleRepository;
 import org.example.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.ecommerce.service.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional

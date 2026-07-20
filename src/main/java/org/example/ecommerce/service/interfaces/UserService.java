@@ -1,7 +1,7 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.interfaces;
 
-import org.example.ecommerce.dto.UserRequestDto;
-import org.example.ecommerce.dto.UserResponseDto;
+import org.example.ecommerce.dto.request.UserRequestDto;
+import org.example.ecommerce.dto.response.UserResponseDto;
 import org.example.ecommerce.entity.User;
 
 public interface UserService {

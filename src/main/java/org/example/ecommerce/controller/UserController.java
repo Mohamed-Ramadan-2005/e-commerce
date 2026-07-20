@@ -1,12 +1,13 @@
 package org.example.ecommerce.controller;
 
 import jakarta.validation.Valid;
-import org.example.ecommerce.dto.JwtResponseDto;
-import org.example.ecommerce.dto.LoginRequestDto;
-import org.example.ecommerce.dto.UserRequestDto;
-import org.example.ecommerce.dto.UserResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.example.ecommerce.dto.response.JwtResponseDto;
+import org.example.ecommerce.dto.request.LoginRequestDto;
+import org.example.ecommerce.dto.request.UserRequestDto;
+import org.example.ecommerce.dto.response.UserResponseDto;
 import org.example.ecommerce.security.JwtUtils;
-import org.example.ecommerce.service.UserService;
+import org.example.ecommerce.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

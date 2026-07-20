@@ -3,7 +3,7 @@ package org.example.ecommerce.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.ecommerce.enumrate.OrderStatus;
+import org.example.ecommerce.entity.enums.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

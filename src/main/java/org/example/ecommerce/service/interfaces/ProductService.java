@@ -1,7 +1,7 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.interfaces;
 
-import org.example.ecommerce.dto.ProductRequestDto;
-import org.example.ecommerce.dto.ProductResponseDto;
+import org.example.ecommerce.dto.request.ProductRequestDto;
+import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
 
 import java.util.List;

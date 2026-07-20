@@ -3,7 +3,7 @@ package org.example.ecommerce.dto.request;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.ecommerce.enumrate.OrderStatus;
+import org.example.ecommerce.entity.enums.OrderStatus;
 
 @Getter
 @Setter

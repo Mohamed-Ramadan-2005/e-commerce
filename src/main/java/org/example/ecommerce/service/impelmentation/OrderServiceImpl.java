@@ -1,18 +1,20 @@
-package org.example.ecommerce.service;
+package org.example.ecommerce.service.impelmentation;
 
-import lombok.Setter;
-import org.example.ecommerce.dto.OrderItemRequestDto;
-import org.example.ecommerce.dto.OrderRequestDto;
-import org.example.ecommerce.dto.OrderResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.example.ecommerce.dto.request.OrderItemRequestDto;
+import org.example.ecommerce.dto.request.OrderRequestDto;
+import org.example.ecommerce.dto.response.OrderResponseDto;
 import org.example.ecommerce.entity.Order;
 import org.example.ecommerce.entity.OrderItem;
 import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.entity.User;
-import org.example.ecommerce.enumrate.OrderStatus;
+import org.example.ecommerce.entity.enums.OrderStatus;
 import org.example.ecommerce.error.BusinessException;
 import org.example.ecommerce.mapper.OrderMapper;
 import org.example.ecommerce.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.ecommerce.service.interfaces.OrderService;
+import org.example.ecommerce.service.interfaces.ProductService;
+import org.example.ecommerce.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +23,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private OrderMapper orderMapper;
+    private final OrderRepository orderRepository;
+    private final UserService userService;
+    private final ProductService productService;
+    private final OrderMapper orderMapper;
     @Override
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto dto,String username) {
