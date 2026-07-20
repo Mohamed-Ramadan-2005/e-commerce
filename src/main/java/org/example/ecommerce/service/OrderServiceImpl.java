@@ -32,8 +32,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Override
     @Transactional
-    public OrderResponseDto createOrder(OrderRequestDto dto) {
-        User user = userService.getUserEntityById(dto.getUserId());
+    public OrderResponseDto createOrder(OrderRequestDto dto,String username) {
+        User user = userService.getUserEntityByUsername(username);
         Order order = new Order();
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
@@ -60,10 +60,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponseDto> getUserOrders(Long userId) {
         User user = userService.getUserEntityById(userId);
-        return orderRepository.findByUserId(user.getId())
-                .stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
+        List<Order> orders = orderRepository.findByUserId(user.getId());
+        return orders.stream().map(orderMapper::toDto).collect(Collectors.toList());
+    }
+    @Override
+    public List<OrderResponseDto> getUserOrdersByUserName(String username) {
+        User user = userService.getUserEntityByUsername(username);
+        List<Order> orders = orderRepository.findByUserId(user.getId());
+        return orders.stream().map(orderMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
