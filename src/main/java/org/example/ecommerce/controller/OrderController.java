@@ -44,4 +44,12 @@ public class OrderController {
         List<OrderResponseDto> orders = orderService.getUserOrdersByUserName(username);
         return ResponseEntity.ok(orders);
     }
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<OrderResponseDto> updateOrderStatus(
+            @PathVariable("id") Long orderId,
+            @Valid @RequestBody org.example.ecommerce.dto.request.OrderStatusUpdateRequestDto requestDto) {
+        OrderResponseDto updatedOrder = orderService.updateOrderStatus(orderId, requestDto.getStatus());
+        return ResponseEntity.ok(updatedOrder);
+    }
 }
