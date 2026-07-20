@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("Email already exists");
         }
         User user = userMapper.toEntity(dto);
-        user.getRoles().add(roleRepository.findByName("USER")
+        user.addRole(roleRepository.findByName("USER")
                 .orElseThrow(()->new BusinessException("Role not found")));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);

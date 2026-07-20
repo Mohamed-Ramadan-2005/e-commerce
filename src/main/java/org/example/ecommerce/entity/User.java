@@ -36,14 +36,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Order> orders = new HashSet<>();
     public void addRole(Role role) {
         this.roles.add(role);
         role.getUsers().add(this);
     }
-
     public void removeRole(Role role) {
         this.roles.remove(role);
         role.getUsers().remove(this);
