@@ -24,7 +24,7 @@ Brief record of the assumptions behind this codebase, the deliberate design choi
 - **DTOs at every boundary** (`dto/request`, `dto/response`) with MapStruct mappers, rather than
   exposing entities directly. Keeps JPA lazy-loading and persistence concerns out of the HTTP
   layer.
-- **Service interfaces + impl split** (`service/interfaces`, `service/impelmentation`)
+- **Service interfaces + impl split** (`service/interfaces`, `service/implementation`)
 
 - **`ddl-auto=validate`.** The app expects the schema to already exist rather than auto-generating
   or migrating it.plain `db/schema.sql` was
