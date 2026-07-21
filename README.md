@@ -24,34 +24,42 @@ The app runs with `spring.jpa.hibernate.ddl-auto=validate`, meaning Hibernate ch
 against the entity mappings at startup but never creates or alters tables itself. `db/schema.sql`
 contains the DDL that matches the current entities — run it once before the first start, and
 again (manually) whenever an entity changes shape.
+## 2. Configure environment variables (.env)
 
-## 2. Configure environment variables
+The application securely loads secrets and database configuration from a `.env` file using `spring-dotenv`.
 
-The app reads secrets and DB connection info from environment variables, falling back to local
-development defaults if unset (see `src/main/resources/application.properties`).
+### Create the `.env` file
 
-| Variable          | Default (dev only)                                | Description                                   |
-|-------------------|-----------------------------------------------------|------------------------------------------------|
-| `DB_URL`           | `jdbc:mariadb://localhost:3306/ecommerce`           | JDBC connection string                          |
-| `DB_USERNAME`       | `root`                                              | Database username                               |
-| `DB_PASSWORD`       | *(empty)*                                            | Database password                               |
-| `JWT_SECRET`        | a placeholder dev key baked into the properties file | Base64 string, ≥32 bytes decoded, used to sign JWTs |
-| `JWT_EXPIRATION`    | `86400000` (24h, in ms)                              | JWT lifetime                                    |
+In the root directory of the project (next to `pom.xml`), create a file named exactly:
 
+```
+.env
+```
 
-**Before running against anything but your own machine**, set real values for at least
-`DB_PASSWORD`, `JWT_SECRET`. Generate a JWT secret with:
+Then add the following variables:
+
+```env
+# Database Configuration
+DB_URL=jdbc:mariadb://localhost:3306/ecommerce
+DB_USERNAME=root
+DB_PASSWORD=your_mariadb_password
+
+# JWT Configuration (Base64 string, >=32 bytes when decoded)
+JWT_SECRET=your_generated_jwt_secret
+JWT_EXPIRATION=86400000
+```
+
+### Generate a secure JWT secret
+
+Run the following command:
 
 ```bash
 openssl rand -base64 32
 ```
 
-Example (bash):
+Then copy the output and set it as your `JWT_SECRET`.
 
-```bash
-export DB_PASSWORD="your-db-password"
-export JWT_SECRET="$(openssl rand -base64 32)"
-```
+---
 
 ## 3. Run the application
 
