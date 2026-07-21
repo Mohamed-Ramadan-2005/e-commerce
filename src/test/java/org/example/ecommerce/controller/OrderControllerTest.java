@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.ecommerce.dto.request.OrderItemRequestDto;
 import org.example.ecommerce.dto.request.OrderRequestDto;
 import org.example.ecommerce.security.JwtUtils;
-import org.example.ecommerce.service.impelmentation.CustomerUserDetailsService;
+import org.example.ecommerce.service.implementation.CustomerUserDetailsService;
 import org.example.ecommerce.service.interfaces.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

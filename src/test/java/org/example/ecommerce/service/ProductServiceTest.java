@@ -5,7 +5,7 @@ import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.mapper.ProductMapper;
 import org.example.ecommerce.repository.ProductRepository;
-import org.example.ecommerce.service.impelmentation.ProductServiceImpl;
+import org.example.ecommerce.service.implementation.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

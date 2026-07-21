@@ -1,4 +1,4 @@
-package org.example.ecommerce.service.impelmentation;
+package org.example.ecommerce.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.entity.User;

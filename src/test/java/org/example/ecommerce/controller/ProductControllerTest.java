@@ -3,7 +3,7 @@ package org.example.ecommerce.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
-import org.example.ecommerce.service.impelmentation.CustomerUserDetailsService;
+import org.example.ecommerce.service.implementation.CustomerUserDetailsService;
 import org.example.ecommerce.service.interfaces.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

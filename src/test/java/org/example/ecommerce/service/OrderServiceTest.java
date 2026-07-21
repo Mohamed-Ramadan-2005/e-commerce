@@ -7,7 +7,7 @@ import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.entity.User;
 import org.example.ecommerce.mapper.OrderMapper;
 import org.example.ecommerce.repository.OrderRepository;
-import org.example.ecommerce.service.impelmentation.OrderServiceImpl;
+import org.example.ecommerce.service.implementation.OrderServiceImpl;
 import org.example.ecommerce.service.interfaces.ProductService;
 import org.example.ecommerce.service.interfaces.UserService;
 import org.junit.jupiter.api.BeforeEach;

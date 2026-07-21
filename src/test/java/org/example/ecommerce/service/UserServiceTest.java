@@ -6,7 +6,7 @@ import org.example.ecommerce.entity.User;
 import org.example.ecommerce.mapper.UserMapper;
 import org.example.ecommerce.repository.RoleRepository;
 import org.example.ecommerce.repository.UserRepository;
-import org.example.ecommerce.service.impelmentation.UserServiceImpl;
+import org.example.ecommerce.service.implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
