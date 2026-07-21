@@ -6,6 +6,7 @@ import org.example.ecommerce.dto.response.UserResponseDto;
 import org.example.ecommerce.entity.Role;
 import org.example.ecommerce.entity.User;
 import org.example.ecommerce.exceptions.BusinessException;
+import org.example.ecommerce.exceptions.ResourceNotFoundException;
 import org.example.ecommerce.mapper.UserMapper;
 import org.example.ecommerce.repository.RoleRepository;
 import org.example.ecommerce.repository.UserRepository;
@@ -35,24 +36,24 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.addRole(roleRepository.findByName("USER")
-                .orElseThrow(()->new BusinessException("Role not found")));
+                .orElseThrow(()->new ResourceNotFoundException("Role not found")));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
     @Override
     public User getUserEntityByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(()->new BusinessException("User not found with username: " + username));
+                .orElseThrow(()->new ResourceNotFoundException("User not found with username: " + username));
     }
     @Override
     public User getUserEntityById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(()->new BusinessException("User not found with id: " + userId));
+                .orElseThrow(()->new ResourceNotFoundException("User not found with id: " + userId));
     }
     @Override
     public void promoteUserToAdmin(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
         Role adminRole = roleRepository.findByName("ADMIN")
                 .orElseThrow(() -> new BusinessException("System Error: ADMIN role does not exist."));
         if (user.getRoles().contains(adminRole)) {

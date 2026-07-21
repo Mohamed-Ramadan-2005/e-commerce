@@ -5,6 +5,7 @@ import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.exceptions.BusinessException;
+import org.example.ecommerce.exceptions.ResourceNotFoundException;
 import org.example.ecommerce.mapper.ProductMapper;
 import org.example.ecommerce.repository.ProductRepository;
 import org.example.ecommerce.service.interfaces.ProductService;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(()->new BusinessException("Product not found with id: " + id));
+                .orElseThrow(()->new ResourceNotFoundException("Product not found with id: " + id));
         return productMapper.toDto(product);
     }
 
@@ -64,6 +65,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductEntityById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(()->new BusinessException("Product not found with id: " + id));
+                .orElseThrow(()->new ResourceNotFoundException("Product not found with id: " + id));
     }
 }

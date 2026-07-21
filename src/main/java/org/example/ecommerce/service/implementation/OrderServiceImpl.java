@@ -10,6 +10,7 @@ import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.entity.User;
 import org.example.ecommerce.entity.enums.OrderStatus;
 import org.example.ecommerce.exceptions.BusinessException;
+import org.example.ecommerce.exceptions.ResourceNotFoundException;
 import org.example.ecommerce.mapper.OrderMapper;
 import org.example.ecommerce.repository.OrderRepository;
 import org.example.ecommerce.service.interfaces.OrderService;
@@ -80,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDto updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new BusinessException("Order not found with ID: " + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
         order.setStatus(newStatus);
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toDto(updatedOrder);
