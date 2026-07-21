@@ -22,10 +22,14 @@ public class AppStartUp implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         if (roleRepository.findByName("USER").isEmpty()) {
-            roleRepository.save(new Role(1l,"USER",null));
+            Role userRole = new Role();
+            userRole.setName("USER");
+            roleRepository.save(userRole);
         }
         if (roleRepository.findByName("ADMIN").isEmpty()) {
-            roleRepository.save(new Role(2l,"ADMIN",null));
+            Role adminRole = new Role();
+            adminRole.setName("ADMIN");
+            roleRepository.save(adminRole);
         }
         if (userRepository.findByUsername("admin").isEmpty()) {
             User adminUser = new User();
