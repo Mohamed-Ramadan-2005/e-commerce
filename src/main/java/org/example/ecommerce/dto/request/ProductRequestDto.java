@@ -18,4 +18,6 @@ public class ProductRequestDto {
     @NotNull(message = "Stock quantity is required")
     @Min(value = 0, message = "Stock quantity must be greater than or equal to 0")
     private Integer stockQuantity;
+    @NotNull(message = "Category is required")
+    private Long categoryId;
 }

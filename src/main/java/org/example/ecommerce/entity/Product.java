@@ -25,4 +25,8 @@ public class Product {
     private Integer stockQuantity;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private ProductCategory category;
+
 }

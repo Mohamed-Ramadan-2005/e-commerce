@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.entity.Product;
-import org.example.ecommerce.exceptions.BusinessException;
+import org.example.ecommerce.entity.ProductCategory;
 import org.example.ecommerce.exceptions.ResourceNotFoundException;
 import org.example.ecommerce.mapper.ProductMapper;
+import org.example.ecommerce.repository.ProductCategoryRepository;
 import org.example.ecommerce.repository.ProductRepository;
 import org.example.ecommerce.service.interfaces.ProductService;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,16 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final ProductCategoryRepository productCategoryRepository;
     @Override
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto dto) {
         Product product = productMapper.toEntity(dto);
+        if (dto.getCategoryId() != null) {
+            ProductCategory category = productCategoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + dto.getCategoryId()));
+            category.addProduct(product);
+        }
         Product savedProduct = productRepository.save(product);
         return productMapper.toDto(savedProduct);
     }
@@ -36,6 +43,11 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setStockQuantity(dto.getStockQuantity());
+        if (dto.getCategoryId() != null) {
+            ProductCategory category = productCategoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + dto.getCategoryId()));
+            category.addProduct(product);
+        }
         Product updatedProduct = productRepository.save(product);
         return productMapper.toDto(updatedProduct);
     }
