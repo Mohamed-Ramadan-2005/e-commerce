@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderItems", ignore = true)
+    @Mapping(target = "category", ignore = true)
     Product toEntity(ProductRequestDto dto);
+    @Mapping(source = "category.name", target = "categoryName")
     ProductResponseDto toDto(Product product);
 }

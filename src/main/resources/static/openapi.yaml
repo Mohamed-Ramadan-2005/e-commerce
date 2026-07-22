@@ -56,6 +56,97 @@ paths:
       responses:
         '200':
           description: User promoted successfully
+
+  # --- NEW CATEGORIES ENDPOINTS ---
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all product categories
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponseDto'
+    post:
+      tags:
+        - Categories
+      summary: Create a new category (ADMIN only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDto'
+      responses:
+        '201':
+          description: Category created
+
+  /categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get a specific category by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Category details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDto'
+    put:
+      tags:
+        - Categories
+      summary: Update a category (ADMIN only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDto'
+      responses:
+        '200':
+          description: Category updated
+    delete:
+      tags:
+        - Categories
+      summary: Delete a category (ADMIN only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Category deleted
+  # --------------------------------
+
   /products:
     get:
       tags:
@@ -189,6 +280,22 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    # --- NEW CATEGORY SCHEMAS ---
+    CategoryRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Electronics"
+    CategoryResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    # ----------------------------
     UserRequestDto:
       type: object
       properties:
@@ -227,6 +334,9 @@ components:
         stockQuantity:
           type: integer
           format: int32
+        categoryId:      # <-- Added Category Link
+          type: integer
+          format: int64
     ProductResponseDto:
       type: object
       properties:
@@ -243,6 +353,8 @@ components:
         stockQuantity:
           type: integer
           format: int32
+        categoryName:    # <-- Added Category Name display
+          type: string
     OrderItemDto:
       type: object
       properties:
