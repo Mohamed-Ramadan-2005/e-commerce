@@ -43,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setStockQuantity(dto.getStockQuantity());
+        product.setImageUrl(dto.getImageUrl());
         if (dto.getCategoryId() != null) {
             ProductCategory category = productCategoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + dto.getCategoryId()));
@@ -78,5 +79,14 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductEntityById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Product not found with id: " + id));
+    }
+
+    @Override
+    public List<ProductResponseDto> getProductsByCategoryId(Long id) {
+        return productRepository.findByCategoryId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Products not found with category id: " + id))
+                .stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

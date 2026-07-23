@@ -20,4 +20,5 @@ public class ProductRequestDto {
     private Integer stockQuantity;
     @NotNull(message = "Category is required")
     private Long categoryId;
+    private String imageUrl;
 }

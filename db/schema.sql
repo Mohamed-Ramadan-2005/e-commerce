@@ -31,6 +31,7 @@ CREATE TABLE products (
                           price DOUBLE NOT NULL,
                           stock_quantity INT NOT NULL,
                           category_id BIGINT,
+                          image_url varchar(500),
                           CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES product_categories(id) ON DELETE SET NULL
 );
 
