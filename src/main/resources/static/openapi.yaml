@@ -57,7 +57,7 @@ paths:
         '200':
           description: User promoted successfully
 
-  # --- NEW CATEGORIES ENDPOINTS ---
+  # --- CATEGORIES ENDPOINTS ---
   /categories:
     get:
       tags:
@@ -145,8 +145,8 @@ paths:
       responses:
         '204':
           description: Category deleted
-  # --------------------------------
 
+  # --- PRODUCTS ENDPOINTS ---
   /products:
     get:
       tags:
@@ -176,7 +176,26 @@ paths:
       responses:
         '201':
           description: Product created
+
   /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponseDto'
     put:
       tags:
         - Products
@@ -215,6 +234,51 @@ paths:
       responses:
         '204':
           description: Product deleted
+
+  /products/category/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get products by category ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of products in the specified category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponseDto'
+
+  /products/search/{name}:
+    get:
+      tags:
+        - Products
+      summary: Search products by name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of products matching the search query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponseDto'
+
+  # --- ORDERS ENDPOINTS ---
   /orders:
     post:
       tags:
@@ -273,6 +337,7 @@ paths:
       responses:
         '200':
           description: Order status updated
+
 components:
   securitySchemes:
     bearerAuth:
@@ -280,7 +345,6 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    # --- NEW CATEGORY SCHEMAS ---
     CategoryRequestDto:
       type: object
       properties:
@@ -295,7 +359,6 @@ components:
           format: int64
         name:
           type: string
-    # ----------------------------
     UserRequestDto:
       type: object
       properties:
@@ -334,9 +397,11 @@ components:
         stockQuantity:
           type: integer
           format: int32
-        categoryId:      # <-- Added Category Link
+        categoryId:
           type: integer
           format: int64
+        imageUrl:
+          type: string
     ProductResponseDto:
       type: object
       properties:
@@ -353,7 +418,9 @@ components:
         stockQuantity:
           type: integer
           format: int32
-        categoryName:    # <-- Added Category Name display
+        categoryName:
+          type: string
+        imageUrl:
           type: string
     OrderItemDto:
       type: object

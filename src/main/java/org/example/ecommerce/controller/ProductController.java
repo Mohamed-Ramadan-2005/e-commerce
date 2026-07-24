@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
-import org.example.ecommerce.entity.Product;
 import org.example.ecommerce.service.interfaces.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -29,9 +27,14 @@ public class ProductController {
         List<ProductResponseDto> products = productService.getAllProducts();
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
-    @GetMapping("search/findByCategoryId")
-    public ResponseEntity<List<ProductResponseDto>> getProductsByCategoryId(@RequestParam("id") Long categoryId) {
+    @GetMapping("category/{id}")
+    public ResponseEntity<List<ProductResponseDto>> getProductsByCategoryId(@PathVariable("id") Long categoryId) {
         List<ProductResponseDto> products = productService.getProductsByCategoryId(categoryId);
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+    @GetMapping("search/{name}")
+    public ResponseEntity<List<ProductResponseDto>> getProductsByNameContaining(@PathVariable("name") String name) {
+        List<ProductResponseDto> products = productService.getProductsByNameContaining(name);
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
     @PostMapping

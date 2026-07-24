@@ -89,4 +89,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProductResponseDto> getProductsByNameContaining(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Products not found containing name: " + name))
+                .stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }
