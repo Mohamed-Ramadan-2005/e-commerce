@@ -10,9 +10,13 @@ import org.example.ecommerce.mapper.ProductMapper;
 import org.example.ecommerce.repository.ProductCategoryRepository;
 import org.example.ecommerce.repository.ProductRepository;
 import org.example.ecommerce.service.interfaces.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,11 +65,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(productMapper::toDto);
     }
 
     @Override
@@ -82,20 +84,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getProductsByCategoryId(Long id) {
-        return productRepository.findByCategoryId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Products not found with category id: " + id))
-                .stream()
+    public Page<ProductResponseDto> getProductsByCategoryId(Long id, Pageable pageable) {
+        List<Product> products = productRepository.findByCategoryId(id, pageable)
+                .orElse(Collections.emptyList());
+        return new PageImpl<>(products.stream()
                 .map(productMapper::toDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), pageable, products.size());
     }
 
     @Override
-    public List<ProductResponseDto> getProductsByNameContaining(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Products not found containing name: " + name))
-                .stream()
+    public Page<ProductResponseDto> getProductsByNameContaining(String name, Pageable pageable) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(name, pageable)
+                .orElse(Collections.emptyList());
+        return new PageImpl<>(products.stream()
                 .map(productMapper::toDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), pageable, products.size());
     }
 }

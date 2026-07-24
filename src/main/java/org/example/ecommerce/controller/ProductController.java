@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.dto.request.ProductRequestDto;
 import org.example.ecommerce.dto.response.ProductResponseDto;
 import org.example.ecommerce.service.interfaces.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,18 +26,26 @@ public class ProductController {
         return new ResponseEntity<>(product,HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
-        List<ProductResponseDto> products = productService.getAllProducts();
+    public ResponseEntity<Page<ProductResponseDto>> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponseDto> products = productService.getAllProducts(pageable);
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
     @GetMapping("category/{id}")
-    public ResponseEntity<List<ProductResponseDto>> getProductsByCategoryId(@PathVariable("id") Long categoryId) {
-        List<ProductResponseDto> products = productService.getProductsByCategoryId(categoryId);
+    public ResponseEntity<Page<ProductResponseDto>> getProductsByCategoryId(@PathVariable("id") Long categoryId,
+                                                                             @RequestParam(defaultValue = "0") int page,
+                                                                             @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponseDto> products = productService.getProductsByCategoryId(categoryId, pageable);
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
     @GetMapping("search/{name}")
-    public ResponseEntity<List<ProductResponseDto>> getProductsByNameContaining(@PathVariable("name") String name) {
-        List<ProductResponseDto> products = productService.getProductsByNameContaining(name);
+    public ResponseEntity<Page<ProductResponseDto>> getProductsByNameContaining(@PathVariable("name") String name,
+                                                                                @RequestParam(defaultValue = "0") int page,
+                                                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponseDto> products = productService.getProductsByNameContaining(name, pageable);
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
     @PostMapping
