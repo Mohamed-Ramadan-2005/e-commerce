@@ -30,6 +30,15 @@ Brief record of the assumptions behind this codebase, the deliberate design choi
   or migrating it.plain `db/schema.sql` was
   added (see the README) to make the "install" story concrete. `db/schema.sql` was hand-derived from the entity annotations rather than dumped from a real
   running database.
-- **`BusinessException` + `@RestControllerAdvice`** for a uniform error shape on expected failures
-  (404s modeled as bad requests, stock issues, duplicate username/email, etc.), with dedicated
-  handlers for auth/permission errors.
+- **Two distinct exception types, both handled by `@RestControllerAdvice`**, so the HTTP status
+  actually matches what went wrong: `ResourceNotFoundException` → `404` for "this
+  product/category/user/order doesn't exist," and `BusinessException` → `400` for rule violations
+  on an otherwise-valid request (insufficient stock, duplicate username/email, promoting an
+  already-ADMIN user). `BadCredentialsException` → `401` and `AccessDeniedException` → `403` get
+  their own handlers too, so every error path returns a status a client can branch on rather than
+  everything collapsing into "bad request."
+- **Product listing endpoints are paginated** (`GET /products`, `/products/category/{id}`,
+  `/products/search/{name}`) via Spring Data's `Pageable`, defaulting to a page size of 10. This
+  is a breaking response-shape change from a bare JSON array to a `Page<T>` wrapper — acceptable
+  here since there's no external consumer yet to break, but worth flagging if this API ever
+  ships a v1 client.
