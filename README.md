@@ -1,8 +1,8 @@
 # E-Commerce API
 
-A Spring Boot REST API for a small e-commerce platform: user registration/login (JWT), product
-catalog management, and order placement with stock tracking. Two roles are supported, `USER` and
-`ADMIN`.
+A Spring Boot REST API for a small e-commerce platform: user registration/login (JWT), a product
+catalog organized into categories (with search and pagination), and order placement with stock
+tracking. Two roles are supported, `USER` and `ADMIN`.
 
 See [`DESIGN.md`](./DESIGN.md) for assumptions, design choices, and known limitations.
 
@@ -61,7 +61,15 @@ Then copy the output and set it as your `JWT_SECRET`.
 
 ---
 
-## 3. Run the application
+## 3. Note on CORS
+
+`CorsConfig` currently allows only `http://localhost:4200` (a local Angular dev server) as a
+cross-origin caller, with `GET`/`POST`/`PUT`/`PATCH`/`DELETE`/`OPTIONS` and credentials enabled.
+If you're calling the API from a frontend running on a different origin, update the
+`allowedOrigins(...)` value in `CorsConfig` — server-to-server calls, curl, and Postman are
+unaffected either way, since CORS only applies to browser requests.
+
+## 4. Run the application
 
 ```bash
 ./mvnw spring-boot:run
@@ -73,14 +81,14 @@ On first startup, `AppStartUp` seeds the `USER` and `ADMIN` roles and, if no `ad
 yet, creates one (`username: admin`, `password 123`).
 **Change or remove this account before deploying anywhere reachable by others.**
 
-## 4. Build a jar
+## 5. Build a jar
 
 ```bash
 ./mvnw clean package
 java -jar target/e-commerce-0.0.1-SNAPSHOT.jar
 ```
 
-## 5. Run tests
+## 6. Run tests
 
 ```bash
 ./mvnw test
@@ -102,20 +110,49 @@ A ready-to-import Postman collection is also included at
 
 ## Quick API tour
 
-| Method | Path                     | Auth        | Description                          |
-|--------|--------------------------|-------------|---------------------------------------|
-| POST   | `/users/register`        | Public      | Register a new user (`USER` role)     |
-| POST   | `/users/login`           | Public      | Log in, returns a JWT                 |
-| PATCH  | `/users/{userId}/promote`| ADMIN       | Promote a user to `ADMIN`             |
-| GET    | `/products`               | Public      | List products                         |
-| GET    | `/products/{id}`          | Public      | Get one product                       |
-| POST   | `/products`                | ADMIN       | Create a product                      |
-| PUT    | `/products/{id}`          | ADMIN       | Update a product                      |
-| DELETE | `/products/{id}`          | ADMIN       | Delete a product                      |
-| POST   | `/orders`                  | USER        | Place an order                        |
-| GET    | `/orders/my-orders`        | USER        | View your own orders                  |
-| GET    | `/orders`                  | ADMIN       | List all orders                       |
-| GET    | `/orders/user/{userId}`    | ADMIN       | List a specific user's orders         |
-| PATCH  | `/orders/{id}/status`      | ADMIN       | Update an order's status              |
+| Method | Path                        | Auth   | Description                                              |
+|--------|-----------------------------|--------|------------------------------------------------------------|
+| POST   | `/users/register`           | Public | Register a new user (`USER` role)                          |
+| POST   | `/users/login`               | Public | Log in, returns a JWT                                      |
+| PATCH  | `/users/{userId}/promote`   | ADMIN  | Promote a user to `ADMIN`                                  |
+| GET    | `/products`                  | Public | List products (paginated)                                  |
+| GET    | `/products/{id}`             | Public | Get one product                                             |
+| GET    | `/products/category/{id}`   | Public | List products in a category (paginated)                    |
+| GET    | `/products/search/{name}`   | Public | Search products by name, case-insensitive (paginated)      |
+| POST   | `/products`                   | ADMIN  | Create a product                                            |
+| PUT    | `/products/{id}`             | ADMIN  | Update a product                                            |
+| DELETE | `/products/{id}`             | ADMIN  | Delete a product                                            |
+| GET    | `/categories`                 | Public | List all categories                                         |
+| GET    | `/categories/{id}`           | Public | Get one category                                            |
+| POST   | `/categories`                 | ADMIN  | Create a category                                           |
+| PUT    | `/categories/{id}`           | ADMIN  | Update a category                                           |
+| DELETE | `/categories/{id}`           | ADMIN  | Delete a category                                           |
+| POST   | `/orders`                     | USER   | Place an order                                              |
+| GET    | `/orders/my-orders`           | USER   | View your own orders                                        |
+| GET    | `/orders`                     | ADMIN  | List all orders                                             |
+| GET    | `/orders/user/{userId}`       | ADMIN  | List a specific user's orders                               |
+| PATCH  | `/orders/{id}/status`         | ADMIN  | Update an order's status                                    |
 
 Authenticated requests use `Authorization: Bearer <token>`.
+
+The three paginated `GET /products*` endpoints accept `page` (default `0`) and `size`
+(default `10`) query parameters, e.g. `GET /products?page=1&size=20`. They return a Spring
+`Page<T>` object (`content`, `totalElements`, `totalPages`, `number`, ...), not a bare array —
+update any client that expects a plain JSON list from an earlier version of this API.
+
+Each product belongs to exactly one category (`categoryId` on create/update requests,
+`categoryName` in responses) rather than many categories at once — see [`DESIGN.md`](./DESIGN.md)
+for the reasoning.
+
+## Error responses
+
+Errors come back as JSON with a consistent `{ "status", "error", "message" }` shape (field-level
+validation errors instead return a `{ "field": "message" }` map). Status codes in use:
+
+| Status | When |
+|--------|------|
+| `400 Bad Request` | Request validation failures; business-rule violations (insufficient stock, duplicate username/email, promoting an already-ADMIN user) |
+| `401 Unauthorized` | Missing, invalid, or expired credentials |
+| `403 Forbidden` | Authenticated, but the account's role doesn't allow the action |
+| `404 Not Found` | The requested product, category, user, or order doesn't exist |
+| `500 Internal Server Error` | Unexpected server-side errors |
