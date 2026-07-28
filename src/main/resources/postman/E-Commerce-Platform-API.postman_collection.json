@@ -26,7 +26,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"Password123!\",\n  \"email\": \"johndoe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+              "raw": "{\n  \"username\": \"mramadan\",\n  \"password\": \"123\",\n  \"email\": \"mramadan@example.com\",\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ramadan\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/users/register",
@@ -61,7 +61,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"Password123!\"\n}"
+              "raw": "{\n  \"username\": \"mramadan\",\n  \"password\": \"123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/users/login",
@@ -103,7 +103,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Peripherals\"\n}"
+              "raw": "{\n  \"name\": \"SmartPhones\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/categories",
@@ -124,7 +124,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Workstations\"\n}"
+              "raw": "{\n  \"name\": \"Electronics\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/categories/{{categoryId}}",
