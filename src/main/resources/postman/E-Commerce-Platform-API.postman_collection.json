@@ -3,12 +3,13 @@
     "_postman_id": "fb63924f-e408-456b-9f10-d79909332685",
     "name": "E-Commerce Platform API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Auth flow: run 'login' first — it auto-saves the JWT into the {{token}} collection variable, which every protected request below reuses via Authorization: Bearer {{token}}.\n\nRequest body reference:\n- UserRequestDto: username, password, email, firstName, lastName\n- LoginRequestDto: username, password\n- JwtResponseDto: { \"token\": \"...\" }\n- ProductRequestDto: name, description, price, stockQuantity\n- OrderRequestDto: items: [ { productId, quantity } ]\n- OrderStatusUpdateRequestDto: { \"status\": \"SHIPPED\" }"
+    "description": "Auth flow: run 'login' first — it auto-saves the JWT into the {{token}} collection variable, which every protected request below reuses via Authorization: Bearer {{token}}.\n\nRequest body reference:\n- UserRequestDto: username, password, email, firstName, lastName\n- LoginRequestDto: username, password\n- JwtResponseDto: { \"token\": \"...\" }\n- CategoryRequestDto: name\n- ProductRequestDto: name, description, price, stockQuantity, categoryId, imageUrl\n- OrderRequestDto: items: [ { productId, quantity } ]\n- OrderStatusUpdateRequestDto: { \"status\": \"SHIPPED\" }"
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
     { "key": "token", "value": "", "type": "string" },
     { "key": "productId", "value": "1", "type": "string" },
+    { "key": "categoryId", "value": "1", "type": "string" },
     { "key": "userId", "value": "2", "type": "string" },
     { "key": "orderId", "value": "1", "type": "string" }
   ],
@@ -90,6 +91,97 @@
       ]
     },
     {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "add category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Peripherals\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Requires ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "update category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Workstations\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Requires ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "get category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Public — no auth required."
+          },
+          "response": []
+        },
+        {
+          "name": "get all categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Public — no auth required."
+          },
+          "response": []
+        },
+        {
+          "name": "delete category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Requires ADMIN role."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Products",
       "item": [
         {
@@ -102,7 +194,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"27-inch Gaming Monitor\",\n  \"description\": \"4K UHD Gaming Monitor with 144Hz refresh rate\",\n  \"price\": 250.00,\n  \"stockQuantity\": 10\n}"
+              "raw": "{\n  \"name\": \"27-inch Gaming Monitor\",\n  \"description\": \"4K UHD Gaming Monitor with 144Hz refresh rate\",\n  \"price\": 250.00,\n  \"stockQuantity\": 10,\n  \"categoryId\": 1,\n  \"imageUrl\": \"/assets/images/products/monitor.jpg\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/products",
@@ -123,7 +215,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"27-inch Gaming Monitor\",\n  \"description\": \"4K UHD Gaming Monitor with 144Hz refresh rate (updated)\",\n  \"price\": 224.99,\n  \"stockQuantity\": 8\n}"
+              "raw": "{\n  \"name\": \"27-inch Gaming Monitor\",\n  \"description\": \"4K UHD Gaming Monitor with 144Hz refresh rate (updated)\",\n  \"price\": 224.99,\n  \"stockQuantity\": 8,\n  \"categoryId\": 1,\n  \"imageUrl\": \"/assets/images/products/monitor.jpg\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/products/{{productId}}",
@@ -149,16 +241,56 @@
           "response": []
         },
         {
-          "name": "get all products",
+          "name": "get all products (paginated)",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/products",
+              "raw": "{{baseUrl}}/products?page=0&size=10",
               "host": ["{{baseUrl}}"],
-              "path": ["products"]
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
             },
-            "description": "Public — no auth required."
+            "description": "Public — returns a Spring Page object."
+          },
+          "response": []
+        },
+        {
+          "name": "get products by category (paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/category/{{categoryId}}?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "category", "{{categoryId}}"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            },
+            "description": "Public — returns a Spring Page object."
+          },
+          "response": []
+        },
+        {
+          "name": "search products by name (paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/search/monitor?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "search", "monitor"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            },
+            "description": "Public — returns a Spring Page object."
           },
           "response": []
         },
